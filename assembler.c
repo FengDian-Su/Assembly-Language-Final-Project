@@ -2,20 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #define OPMAX 59
-
 char opt_name[OPMAX][50], opt_num[OPMAX][50];
-
 typedef struct symtable *node;
-struct symtable
-{
+struct symtable{
 	char name[10];
 	char num[10];
 	node next;
 };
 node head = NULL, tail = NULL;
-
-void insert_sym(char temp_name[], char *temp_num)
-{
+void insert_sym(char temp_name[], char *temp_num){
 	node temp;
 	temp = (node)malloc(sizeof(struct symtable));
 	strcpy(temp->name, temp_name);
@@ -27,66 +22,47 @@ void insert_sym(char temp_name[], char *temp_num)
 		tail->next = temp;
 	tail = temp;
 }
-
-int is_sym(char temp_name[])
-{
+int is_sym(char temp_name[]){
 	node ptr = head;
-	while (ptr)
-	{
+	while (ptr){
 		if (strcmp(ptr->name, temp_name) == 0)
 			return 1;
 		ptr = ptr->next;
 	}
 	return 0;
 }
-
-void update_sym(char temp_name[], char temp_num[])
-{
+void update_sym(char temp_name[], char temp_num[]){
 	node ptr = head;
-	while (ptr)
-	{
+	while (ptr){
 		if (strcmp(ptr->name, temp_name) == 0)
 			strcpy(ptr->num, temp_num);
 		ptr = ptr->next;
 	}	
 }
-
-char* search_sym(char temp_name[])
-{
+char* search_sym(char temp_name[]){
 	node ptr = head;
-	while (ptr)
-	{
+	while (ptr){
 		if (strcmp(ptr->name, temp_name) == 0)
 			return ptr->num;
 		ptr = ptr->next;
 	}
 	return "";
 }
-
-void output_sym()
-{
+void output_sym(){
 	node ptr = head;
-	while (ptr)
-	{
+	while (ptr){
 		printf("%s -> %s\n", ptr->name, ptr->num);
 		ptr = ptr->next;
 	}
 }
-
-int search_opt(char temp_name[])
-{
+int search_opt(char temp_name[]){
 	int i;
 	for (i = 0; i < OPMAX; i++)
 		if (strcmp(temp_name, opt_name[i]) == 0)
 			return i;
 	return -1;
 }
-
-
-int main()
-{
-	// path 1
-	
+int main(){
 	int i, j, record_opt = 0, file_line = 0;
 	char str[50];
 	FILE *ot;
@@ -94,16 +70,12 @@ int main()
 	FILE *im;
 	ot = fopen("op_table.txt", "r");
 	ot = fopen("op_table.txt", "r");
-	while (!feof(ot))
-	{
+	while (!feof(ot)){
 		fgets(str, 50, ot);
 		int opt_flag = 0, opt_cnt = 0;
-		for (i = 0; i < strlen(str); i++)
-		{
-			if (opt_flag == 0)
-			{
-				if (str[i] == '\t')
-				{
+		for (i = 0; i < strlen(str); i++){
+			if (opt_flag == 0){
+				if (str[i] == '\t'){
 					opt_flag = 1;
 					opt_name[record_opt][i] = '\0';
 					opt_cnt = 0;
@@ -111,10 +83,8 @@ int main()
 				else
 					opt_name[record_opt][opt_cnt++] = str[i];
 			}	
-			else if (opt_flag == 1)
-			{
-				if (str[i] == '\n')
-				{
+			else if (opt_flag == 1){
+				if (str[i] == '\n'){
 					opt_num[record_opt][opt_cnt] = '\0';
 					break;
 				}
@@ -130,15 +100,12 @@ int main()
 	im = fopen("immediate_file.txt", "a");
 	char field[3][50], locctr[10];
 	int initial = 0, locnum = 0;
-	while (!feof(fs))
-	{
+	while (!feof(fs)){
 		int flag = 0, cin = 0;
 		char output_line[50];
 		fgets(str, 50, fs);
-		for (i = 0; i < strlen(str), flag < 3; i++)
-		{
-			if (str[i] == '\t' || str[i] == '\n')
-			{
+		for (i = 0; i < strlen(str), flag < 3; i++){
+			if (str[i] == '\t' || str[i] == '\n'){
 				field[flag][cin] = '\0';
 				cin = 0;
 				flag++;
@@ -146,24 +113,20 @@ int main()
 			else
 				field[flag][cin++] = str[i];
 		}
-		if (initial == 0)
-		{
+		if (initial == 0){
 			if (strcmp(field[1], "START") == 0)
 				strcpy(locctr, field[2]);
 			else
 				strcpy(locctr, "0\0");
-			
 			int trans_temp = atoi(locctr);
 			locnum = 1;
-			while (trans_temp >= 1)
-			{
+			while (trans_temp >= 1){
 				locnum *= 16;
 				trans_temp /= 16;
 			}
 			initial = 1;
 		}
-		if (strcmp(field[1], "END") == 0)
-		{
+		if (strcmp(field[1], "END") == 0){
 			memset(output_line, 0, 50);
 			strcat(output_line, "\t");
 			strcat(output_line, str);
