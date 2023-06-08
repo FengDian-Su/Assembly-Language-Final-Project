@@ -3,7 +3,7 @@
 #include <string.h>
 #define OPMAX 59    // set the number of optable 
 
-char opt_name[OPMAX][50], opt_num[OPMAX][50], loc_temp[50], hex_loc[5], restore[50][1000], r2[50][4], end_loc[10];
+char opt_name[OPMAX][50], opt_num[OPMAX][50], loc_temp[50], hex_loc[5], restore[50][1000], end_loc[10];
 // symbol table using link list structure
 typedef struct symtable *node;  
 struct symtable{
